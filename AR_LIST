@@ -1,0 +1,28 @@
+#AR NOAA    Beginning       end          ID                   HARPs
+11067       1.5.2010        6.5.2010     JSOC_20180918_435    0001
+11082       16.6.2010       26.6.2010    JSOC_20180918_447    0057
+11095       2.8.2010        12.8.2010    JSOC_20180919_199    0114
+11096       8.8.2010        12.8.2010    JSOC_20180919_200    0116
+11116       16.10.2010      19.10.2010   JSOC_20180919_315    0221
+11132       3.12.2010       5.12.2010    JSOC_20180919_341    0285
+11134       12.12.2010      13.12.2010   JSOC_20180919_342    0284
+11137       25.12.2010      26.12.2010   JSOC_20180919_343    0317
+11139       30.12.2010      31.12.2010   JSOC_20180919_345    0321
+11143       4.1.2011        8.1.2011     JSOC_20180919_348    0335
+11144       7.1.2011        09.1.2011    JSOC_20180919_349    0340
+11145       8.1.2011        11.1.2011    JSOC_20180919_351    0338
+11146       10.1.2011       13.1.2011    JSOC_20180919_352    0342
+11152       2.2.2011        6.2.2011     JSOC_20180919_355    0361
+11154       8.2.2011        9.2.2011     JSOC_20180919_356    0368
+11155       7.2.2011        9.2.2011     JSOC_20180919_358    0366
+11156       8.2.2011        13.2.2011    JSOC_20180919_359    0367
+11159       10.2.2011       16.2.2011    JSOC_20180919_360    0371
+11167       2.3.2011        7.3.2011     JSOC_20180919_366    0403
+
+
+# Match NOAA AR data with HMI HARPs data using http://jsoc.stanford.edu/doc/data/hmi/harp/harp_definitive
+# Its manual work, but it will make your life easier once you have HARPs so you can query easily
+
+# LOL, just cross match it to http://jsoc.stanford.edu/doc/data/hmi/harpnum_to_noaa/all_harps_with_noaa_ars.txt
+#
+# cat AR_LIST | grep -Ev "^#" | awk '{ print $1 }'  | xargs -I '{}' grep '{}' HARPNUM_NOAA.txt
