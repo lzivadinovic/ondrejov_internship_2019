@@ -31,3 +31,13 @@ If you want to create query on HMI sharp/harp but you only know NOAA AR number a
 Also, manual is here http://jsoc2.stanford.edu/ajax/RecordSetHelp.html (example 6)
 
 
+
+## Tue 23 Jul 2019 12:17:36 PM CEST
+
+Problem with query above is that we are using nrt (near real time data) its fast track pipeline for live checking of data (i assume), if we change to regular 720 sharp, query is working with HARPS number as expected.
+
+You can see different sharps formats here http://jsoc.stanford.edu/doc/data/hmi/sharp/sharp.htm, i've opet out for trying hmi.sharp_720s (and later on hmi.sharps_cea_720s) and abandon nrt.
+
+So SHARP query at the end should be like ```hmi.sharp_720s[3604]{**ALL**}```
+
+Also, this fixes missing NOAA -> HARPNUM problem and removes query by date and NOAA_ARS number; Its cool
