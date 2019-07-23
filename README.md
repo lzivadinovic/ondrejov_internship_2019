@@ -41,3 +41,16 @@ You can see different sharps formats here http://jsoc.stanford.edu/doc/data/hmi/
 So SHARP query at the end should be like ```hmi.sharp_720s[3604]{**ALL**}```
 
 Also, this fixes missing NOAA -> HARPNUM problem and removes query by date and NOAA_ARS number; Its cool
+
+## Tue 23 Jul 2019 04:04:14 PM CEST
+
+Downloaded SHARP data for HARPNUM 3481 and 3604 (corresponding to NOAA AR 11923 and 11950); We downloaded both SHARP 720s and SHARP CEA 720s; Currently on `chromosphere:/seismo4/lzivadinovic`
+
+| HARP |  NOAA  | JSOC_ID           | CEA_JSOC_ID      |
+| -----|--------|-------------------|------------------|
+| 3604 |  11950 | JSOC_20190723_431 | JSOC_20190723_505| 
+| 3481 |  11923 | JSOC_20190723_429 | JSOC_20190723_489|
+
+CEA - are reprojected to local frame, ambiguity resolved magnetic data (Br, Bp, Bt) see sharp webpage for more details; They are also rotated for 180 degrees so that north is up, and east is right. TAKE CARE WHEN COMPARING TO REGULAR SHARP DATA!
+
+This data is bassicaly prepared for analysis.
