@@ -54,3 +54,7 @@ Downloaded SHARP data for HARPNUM 3481 and 3604 (corresponding to NOAA AR 11923 
 CEA - are reprojected to local frame, ambiguity resolved magnetic data (Br, Bp, Bt) see sharp webpage for more details; They are also rotated for 180 degrees so that north is up, and east is right. TAKE CARE WHEN COMPARING TO REGULAR SHARP DATA!
 
 This data is bassicaly prepared for analysis.
+
+## Tue 23 Jul 2019 11:30:05 PM CEST
+
+Tried this out https://github.com/cdiazbas/enhance looks fun and works well. Tested on sunspots with lightbridges, looks really good on enhanced images. Note that you get better results if you normalize data by quiet sun. In the end, i dont see any use of it because we are not interested in small scale structures evolution.
