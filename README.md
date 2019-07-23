@@ -22,10 +22,10 @@ If you want to create query on HMI sharp/harp but you only know NOAA AR number a
 
 ```hmi.sharp_720s_nrt[][2013.12.07/21d][? NOAA_ARS ~ "11923" ?]{**ALL**}```
 
-- [] is HARPNUM; Empty because we dont know it
-- [2013.12.07/21d] - Start date and duration
-- [? NOAA_ARS ~ "11923" ?] - Query string to filter specific AR
-- {**ALL**} - i think this is record limit, but im not sure.
+- `[]` is HARPNUM; Empty because we dont know it
+- `[2013.12.07/21d]` - Start date and duration
+- `[? NOAA_ARS ~ "11923" ?]` - Query string to filter specific AR
+- `{**ALL**}` - i think this is record limit, but im not sure.
 
 
 Also, manual is here http://jsoc2.stanford.edu/ajax/RecordSetHelp.html (example 6)
