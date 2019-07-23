@@ -15,3 +15,19 @@ cat AR_LIST | grep -Ev "^#" | awk '{ print $1 }' | xargs -I '{}' grep '{}' HARPN
 
 It will take first column from AR_LIST sent by Jan, and map it to HARPNUM_NOAA.txt file retrived from JSOC.
 Note that some HARPS will have multiple NOAA AR regions in it, in our case that is one `(HARPS:284  NOAA:11133,11134)`
+
+## Tue 23 Jul 2019 11:38:21 AM CEST
+
+If you want to create query on HMI sharp/harp but you only know NOAA AR number and start date, you can write down query like this 
+
+```hmi.sharp_720s_nrt[][2013.12.07/21d][? NOAA_ARS ~ "11923" ?]{**ALL**}```
+
+- [] is HARPNUM; Empty because we dont know it
+- [2013.12.07/21d] - Start date and duration
+- [? NOAA_ARS ~ "11923" ?] - Query string to filter specific AR
+- {**ALL**} - i think this is record limit, but im not sure.
+
+
+Also, manual is here http://jsoc2.stanford.edu/ajax/RecordSetHelp.html (example 6)
+
+
