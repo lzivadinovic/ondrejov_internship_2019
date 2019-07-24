@@ -64,3 +64,11 @@ Tried this out https://github.com/cdiazbas/enhance looks fun and works well. Tes
 Created ipynotebook for creating mp4 files that represents data animation/evolution. 
 
 Add requirements.txt (its mess, but at least its working with enhance)
+
+## Wed 24 Jul 2019 02:07:32 PM CEST
+
+Tried PCA reduction for removing limb darkening, it only works with data that are near limb. (comment bellow pasted from animate.ipynb, see animate.html for prerendered notebook with data and comments)
+
+Idea is that because there is no obvious intensity gradient, primary component of SVD is not actually limb darkening but some small scale variation across image. This leads to adding some artifacts that are not related to limb darkening, so this method is not suitable for removing limb darkening near disk center. Better idea is to create limb darkening function for this specific filter using some curve $f(r,\lambda)$, where $r$ is distance from disk center, and find $r$ for every pixel and reduce it that way.
+
+
