@@ -58,3 +58,9 @@ This data is bassicaly prepared for analysis.
 ## Tue 23 Jul 2019 11:30:05 PM CEST
 
 Tried this out https://github.com/cdiazbas/enhance looks fun and works well. Tested on sunspots with lightbridges, looks really good on enhanced images. Note that you get better results if you normalize data by quiet sun. In the end, i dont see any use of it because we are not interested in small scale structures evolution.
+
+## Wed 24 Jul 2019 11:27:45 AM CEST
+
+Created ipynotebook for creating mp4 files that represents data animation/evolution. 
+
+Add requirements.txt (its mess, but at least its working with enhance)
