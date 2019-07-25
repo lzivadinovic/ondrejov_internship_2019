@@ -83,3 +83,17 @@ Created function for limb darkening using http://articles.adsabs.harvard.edu/pdf
 
 I cant figure out coordinate system mapping of SHARP CEA. Im having problem calculating distance from sun center in r_sun using CRVAL, near limb and center images have very similar values for this keyword. Not sure what is happening, but i found out that someone wrote conversion http://hmi.stanford.edu/hminuggets/?p=1428 (look at [S1] reference). I thought that it should be crpix = center pixel coordinate in pixels, crval = centar pixel coordinate in some coordinate system (Carrington in this case, but comparing near limb and center images shows different results). Need to read conversion to figure out what is happening. Also, http://jsoc.stanford.edu/doc/keywords/JSOC_Keywords_for_metadata.pdf crunit2 (y axis) for CEA should be sin latitude (or something like that) but in our data is degrees. IDK.
 
+
+## Thu 25 Jul 2019 06:34:18 PM CEST
+
+Finally figured how to easily and quicky transform images to helioprojective coordinates (distance from disk center in arcsecond) so we can now easily correct for limb darkening.
+
+There are some concerns regarding general coordinate transformation for HMI data. Some people say that SDO does not report (in header) same satelite possiotion for HMI and AIA data taken at the same time, and also there is still discussion on how carrington system is deffined (if i understood correctly some guy in chatroom) (see https://github.com/sunpy/sunpy/issues/3057) 
+
+Albert Y. Shih:
+"Re HMI, do keep in mind that we don't have a good observer coordinate from the FITS headers (see  issue #3057), so conversions between HPC and HGC in SunPy may not match whatever is done elsewhere (and that's on top of the fact that people don't necessarily agree on the definition of Carrington longitude"
+
+Big thanks to Stuart Mumford, lead developer of sunpy for helping me figure this out (https://github.com/Cadair).
+
+General comments regarding code detalis and procedures were added to limb_darkening notebook. (for non interactive preview open limb_darkening.html)
+
