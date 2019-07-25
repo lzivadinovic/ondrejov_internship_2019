@@ -97,3 +97,15 @@ Big thanks to Stuart Mumford, lead developer of sunpy for helping me figure this
 
 General comments regarding code detalis and procedures were added to limb_darkening notebook. (for non interactive preview open limb_darkening.html)
 
+
+##Thu 25 Jul 2019 06:43:29 PM CEST
+
+Reading material (helpers):
+
+https://arxiv.org/pdf/1309.2392.pdf
+
+https://nbviewer.jupyter.org/github/mbobra/calculating-spaceweather-keywords/blob/master/feature_extraction.ipynb
+
+http://jsoc.stanford.edu/relevant_papers/ThompsonWT_coordSys.pdf
+
+
