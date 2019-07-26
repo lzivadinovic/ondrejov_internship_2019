@@ -137,3 +137,11 @@ http://jsoc.stanford.edu/relevant_papers/ThompsonWT_coordSys.pdf
 Wrote wraper function that will do limb darkening clearing of images. Its bassicaly nicely written wrapper for stuff we did yesterday. Note that we did not change header of original images (for example mean intensity keyword is incorect, etc...) everything else should be fine.
 
 I did not wrote comments in script, because limb_darkening.ipynb/html contains detailed instruction for one image reduction; Also, to convert ipynb to actuall python script that you can actually run with `python script.py` one can use `jupyter nbconvert --to script remove_limb_darkening_for_dataset.ipynb` it will create file with same name but with .py extension and removing all json embedded data.
+
+## Fri 26 Jul 2019 09:32:17 PM CEST
+
+Tried https://docs.sunpy.org/en/stable/api/sunpy.map.GenericMap.html#sunpy.map.GenericMap.resample and its working as expected. It's even updating headers, so that coordinate frame stays fixed and you can use it later on. It does not update naxis1/2 (dimension of image), but that is no big deal, coordinate delta per pixel, and reference center pixel is updated. Would recommend further usage of this procedure! (maybe submit PR to fix this issue?)
+
+There is also small artifact, that shows up as 0 value padding on the outtermost pixels. So your whole image (rescaled to finner grid using cubic interpolation) is sorounded by 1px box with value 0, but we can just ignore those, normalized histograms looks identical.
+
+Also, i've changed enhance codebase to allow writing back fits headers from enhanced images. I will need to transform header to perserve resampled data coordinate grid, my plan is to use code from sunpy.map.resample as base because they have it very clearly written how they transform header to perserve coordinate grid. But, for now, you insert image, you get back image with headers, original enhance removed headers from image and only saved data back.
