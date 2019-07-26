@@ -65,6 +65,29 @@ Created ipynotebook for creating mp4 files that represents data animation/evolut
 
 Add requirements.txt (its mess, but at least its working with enhance)
 
+#### Note on requirements provided 
+
+Please use virtualenv if you dont want to mess your system!
+
+You need to install specif version of packages, simple `pip install -r requirements.txt` will not work because there are packages that were compiled/installed via git
+
+IIRC, these are onyl two i used (keras and tf contrib)
+
+```bash
+sudo apt install imagemagic imagemagick-common ghostscrip libtk-img libtk8.6 libcfitsio
+pip install sunpy[all] #in zshell use pip install sunpy\[all\]
+pip install astropy[all] # -||-
+
+pip install git+https://www.github.com/keras-team/keras-contrib.git
+
+#also you need to clone repo and run this https://github.com/keras-team/keras-contrib#install-keras_contrib-for-tensorflowkeras
+#its some wraper thing i dont quite understand
+```
+
+I recommend going `pip install -r requirements.txt` untill you encounter error for some package, remove that package from txt file, and rinse and repeat with pip install unitl you get over all packages. Then run install `sunpy[all]` and `astropy[all]` and keras contrib with both pip and cloned repo (this conversion stuff) and that should be it
+
+
+
 ## Wed 24 Jul 2019 02:07:32 PM CEST
 
 Tried PCA reduction for removing limb darkening, it only works with data that are near limb. (comment bellow pasted from animate.ipynb, see animate.html for prerendered notebook with data and comments)
@@ -107,5 +130,4 @@ https://arxiv.org/pdf/1309.2392.pdf
 https://nbviewer.jupyter.org/github/mbobra/calculating-spaceweather-keywords/blob/master/feature_extraction.ipynb
 
 http://jsoc.stanford.edu/relevant_papers/ThompsonWT_coordSys.pdf
-
 
