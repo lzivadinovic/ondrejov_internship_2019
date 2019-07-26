@@ -131,3 +131,9 @@ https://nbviewer.jupyter.org/github/mbobra/calculating-spaceweather-keywords/blo
 
 http://jsoc.stanford.edu/relevant_papers/ThompsonWT_coordSys.pdf
 
+
+## Fri 26 Jul 2019 02:59:25 PM CEST
+
+Wrote wraper function that will do limb darkening clearing of images. Its bassicaly nicely written wrapper for stuff we did yesterday. Note that we did not change header of original images (for example mean intensity keyword is incorect, etc...) everything else should be fine.
+
+I did not wrote comments in script, because limb_darkening.ipynb/html contains detailed instruction for one image reduction; Also, to convert ipynb to actuall python script that you can actually run with `python script.py` one can use `jupyter nbconvert --to script remove_limb_darkening_for_dataset.ipynb` it will create file with same name but with .py extension and removing all json embedded data.
