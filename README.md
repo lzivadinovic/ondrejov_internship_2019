@@ -145,3 +145,7 @@ Tried https://docs.sunpy.org/en/stable/api/sunpy.map.GenericMap.html#sunpy.map.G
 There is also small artifact, that shows up as 0 value padding on the outtermost pixels. So your whole image (rescaled to finner grid using cubic interpolation) is sorounded by 1px box with value 0, but we can just ignore those, normalized histograms looks identical.
 
 Also, i've changed enhance codebase to allow writing back fits headers from enhanced images. I will need to transform header to perserve resampled data coordinate grid, my plan is to use code from sunpy.map.resample as base because they have it very clearly written how they transform header to perserve coordinate grid. But, for now, you insert image, you get back image with headers, original enhance removed headers from image and only saved data back.
+
+## Sat 27 Jul 2019 07:29:24 PM CEST
+
+Fixed enhance header data and write header, if PR doesn't get merged, we could use my fork. https://github.com/lzivadinovic/enhance
