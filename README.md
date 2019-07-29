@@ -149,3 +149,21 @@ Also, i've changed enhance codebase to allow writing back fits headers from enha
 ## Sat 27 Jul 2019 07:29:24 PM CEST
 
 Fixed enhance header data and write header, if PR doesn't get merged, we could use my fork. https://github.com/lzivadinovic/enhance
+
+## Mon 29 Jul 2019 10:28:37 AM CEST
+
+There is 0 pixel boundary after resampling images using sunpy.map resample method. 
+
+Sunpy resample has minusone flag that can NOT be passed while invoking resample method on sunpy map, but if using raw resample function it works. Problem with using resample function is that it does not auto create new coordinate mesh grid and it does not update header of new map. I've created manual 2d interpolation using scipy, and there is no boundary box so i've investigated source code and figured out what is actually happening (minusone flag :( );
+
+Idea is to replace all 0 with mean values of "intensity" of image (in br, it should be mean value of magnetic field...); In worst case scenario, just ignore it because its around 1 promile "err".
+
+Also, we have created normalized histograms of resampled (upscaled) and original HMI data and they are identical!!! So offseting pixels are 0.001678862 area of the whole image, like 1‰!
+
+## Mon 29 Jul 2019 04:07:35 PM CEST
+
+Wrote script for resampling dataset for magnetic data and run trough two dataset, data is on seismo4. It uses cubic spline interpolation to upscale magnetic data to double its size.
+
+Sara wrote script for data normalization of continuum images using histogram. It will create histogram of dataset and find value of flux for maximum of histogram. We decided that 100 bins is OK for this pourpose.
+
+Need to figure out how to run enhance in parallel so we dont wait for like 2hr for one dataset!
