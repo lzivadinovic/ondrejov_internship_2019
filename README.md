@@ -121,7 +121,7 @@ Big thanks to Stuart Mumford, lead developer of sunpy for helping me figure this
 General comments regarding code detalis and procedures were added to limb_darkening notebook. (for non interactive preview open limb_darkening.html)
 
 
-##Thu 25 Jul 2019 06:43:29 PM CEST
+## Thu 25 Jul 2019 06:43:29 PM CEST
 
 Reading material (helpers):
 
@@ -167,3 +167,21 @@ Wrote script for resampling dataset for magnetic data and run trough two dataset
 Sara wrote script for data normalization of continuum images using histogram. It will create histogram of dataset and find value of flux for maximum of histogram. We decided that 100 bins is OK for this pourpose.
 
 Need to figure out how to run enhance in parallel so we dont wait for like 2hr for one dataset!
+
+## Tue 30 Jul 2019 03:52:21 PM CEST
+
+Data preparation was completed for two regions. It was done in following maner:
+
+- Limb darkening reduction on whole dataset using `remove_limb_darkening_for_dataset.py` procedures (Br, Bp, Bt was not reduced for limb darkening)
+- Data was normalized to quiet sun flux with normalize_continuum_images.py (Br, Bp, Bt was not normalized)
+- Normalized images were enhanced using `enhance_dataset.py` procedure, note that you need to use my fork of project and put `enhance_dataset.py` file into that folder (and data should also be there) so this procedure and enhance can work. Problem was hardcoded import in enhance codebase. (Br, Bp, Bt was not enhanced by this method)
+- Magnetic data were upscaled to enhanced data dimensions using `upscale_magnetic_data_with_spline2d.py` which apply cubic spline interpolation to dataset and upscales images by factor of 2 so they match in size/shape enhanced data
+- Enhanced data had to be normalized again to quiet sun and this is done via `normalize_continuum_images.py` procedures
+
+Note that every of this process takes one dataset in terms of folder where data is, search pattern (`continuum` for continuum images for example) and outputs in user specified directory with new naming scheme (ld removed images becomes `continuum_ld_removed` for example). This way, you only need to change input and output folder of dataset on which you want to perform some operation.
+
+Detailed explaination of every reduction can be found above in readme.md or in appropriate `.ipynb` file.
+
+There is also some helper ipynb that were used for quick preview of data, which are not translated to .py file.
+
+Notable example is `compare_enhanced_with_spline` which shows data cutouts and histograms before and after normalisation, and such. Read ipynb for more detailed insight.
