@@ -185,3 +185,16 @@ Detailed explaination of every reduction can be found above in readme.md or in a
 There is also some helper ipynb that were used for quick preview of data, which are not translated to .py file.
 
 Notable example is `compare_enhanced_with_spline` which shows data cutouts and histograms before and after normalisation, and such. Read ipynb for more detailed insight.
+
+## Wed 31 Jul 2019 11:20:24 AM CEST
+
+### CHANGED PROJECT STRUCTURE!
+
+Its getting messy, example notebooks and testing stuff is in `helper_testing_notebooks` folder
+
+Created master prep script `dataset_prep.py`. It uses one folder from HMI dataset, search for contiuum images, and performs reduction explained above.
+There are few drawbacks; To make it work (to be more specific, to make enhance work) you need to put this script into enhance folder root, but you also need to use my modified fork (sunpy.map and header support) https://github.com/lzivadinovic/enhance, you should use master branch from this repo. 
+
+After that, you need to modify script variables that are pointing to data input and output folder, also, you can change search criterium, but for this master script, its only working on continuum data, so be careful.
+
+There is also master upscale Bx script, it works the same way as `dataset_prep.py`, it runs trough all [Br, Bp, Bt] files and upscales them to 2x size
