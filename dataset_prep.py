@@ -9,6 +9,8 @@ from astropy import units as u
 import sunpy.coordinates.transformations
 from sunpy.coordinates import frames
 
+from enhance import enhance
+
 
 # In[ ]:
 
