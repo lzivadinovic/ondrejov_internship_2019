@@ -198,3 +198,13 @@ There are few drawbacks; To make it work (to be more specific, to make enhance w
 After that, you need to modify script variables that are pointing to data input and output folder, also, you can change search criterium, but for this master script, its only working on continuum data, so be careful.
 
 There is also master upscale Bx script, it works the same way as `dataset_prep.py`, it runs trough all [Br, Bp, Bt] files and upscales them to 2x size
+
+## Fri 02 Aug 2019 09:12:59 AM CEST
+
+Yesterday i wrote routines for detecting active regions and labeling them by numbers. Threshold was 0.5 of quiet sun intensity and groupation of pixel is considered pore if it has more than 20px of surface. That is ~2.5pix in radii on enhanced image. Pixel size on HMI data is 1", but on enhanced, they were upscaled by factor of 2, so we consider pore if object is 5px accross => 2.5".
+
+Also, wrote routines for calculating center of mass of each patch. Also, there are routines for calculating <Br>, <Bp>, <Bt> for each polygon.
+
+I need to thing about merging and tracking polygons.
+
+
