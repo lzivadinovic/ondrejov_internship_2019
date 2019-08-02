@@ -208,3 +208,11 @@ Also, wrote routines for calculating center of mass of each patch. Also, there a
 I need to thing about merging and tracking polygons.
 
 
+
+## Fri 02 Aug 2019 05:59:24 PM CEST
+
+Finished `region_fill_master_wrap.py` that handles patches discovery and labeling for every fits intensity file and calculates mean values for magnetic field. Its extensible, you can select fill structure, intensity treshold, how small patches (in pixels) to ignore. This can be used in main pipeline for extracting patches of interest. 
+
+This function also return labeld masked array for discovered patches, in wraper we are just using it to write patches data into txt files. It's gonna be usefull also for tracking algorithm, but we will need full mask because of possible separation and merging of pores and objects on sun surfaces. But we can simply import function from that file with `from region_fill.... import function_name...` and handle outputs ourselves because its always returns two matrices (patches and labeled array, both are zero matrices if there is no patch for selected criteria)
+
+Read the code for more info, functions have documentation for input/output!
