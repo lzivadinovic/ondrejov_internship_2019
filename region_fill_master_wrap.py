@@ -139,7 +139,9 @@ def get_patches_and_vectors(I, bx, by, bz, pixel_limit=20, thr=0.5, floodfill=4)
     elif num_features1 == 1:
         features_label = np.array([1])
     else:
-        features_label = np.arange(1, num_features1, 1)
+        #it has to be +1 because arange(1,2,1) returns np.array([1])
+        #so we are missing some data
+        features_label = np.arange(1, num_features1+1, 1)
     cmass = center_of_mass(labeled_array, labeled_array1, features_label)
     # print(labeled_array)
 
