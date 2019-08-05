@@ -155,9 +155,8 @@ def get_patches_and_vectors(I, bx, by, bz, pixel_limit=20, thr=0.5, floodfill=4)
     for pore_index in features_label:
         # valid pixels for that pore index over which we should average
         valid_pixels = np.argwhere(labeled_array1 == pore_index)
-        # for some reason x is normal here
-        RETURN_MATRIX[pore_index - 1][0] = cmass[pore_index-1][0]
-        RETURN_MATRIX[pore_index - 1][1] = cmass[pore_index-1][1]
+        RETURN_MATRIX[pore_index - 1][0] = cmass[pore_index-1][1]
+        RETURN_MATRIX[pore_index - 1][1] = cmass[pore_index-1][0]
         RETURN_MATRIX[pore_index - 1][2] = np.mean(bx.data[valid_pixels[:, 0], valid_pixels[:, 1]])
         #Note that here we are using -by because Bt = -By
         RETURN_MATRIX[pore_index - 1][3] = np.mean(-by.data[valid_pixels[:, 0], valid_pixels[:, 1]])
