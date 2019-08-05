@@ -101,7 +101,7 @@ def get_patches_and_vectors(I, bx, by, bz, pixel_limit=20, thr=0.5, floodfill=4)
     #So lets handle it right here
     #And its faster at the end, we are leaving function right here
     if not X.mask.any():
-        return np.zeros([]), np.zeros([I.data.shape[1],I.data.shape[0]])
+        return np.zeros([]), np.zeros([I.data.shape[0],I.data.shape[1]])
     
     try:
         # sometimes this fails because of endianness
@@ -131,7 +131,7 @@ def get_patches_and_vectors(I, bx, by, bz, pixel_limit=20, thr=0.5, floodfill=4)
     #Check again if we removed all features because of trh for region of interest
     #I tought that we are smarter than nested if/elif/else
     if num_features1 == 0:
-        return np.zeros([]), np.zeros([I.data.shape[1],I.data.shape[0]])
+        return np.zeros([]), np.zeros([I.data.shape[0],I.data.shape[1]])
       
     #######
     # lets calculate centers of patches
