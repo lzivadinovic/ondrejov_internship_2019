@@ -75,9 +75,9 @@ def get_patches_and_vectors(I, bx, by, bz, pixel_limit=20, thr=0.5, floodfill=4)
     
         This function returns two arrays:
         
-        RETURN_MATRIX - Matrix that has data for patches center in dims [5xN] where N is number of patches.
+        RETURN_MATRIX - Matrix that has data for patches center in dims [6xN] where N is number of patches.
         It is of folowing structure
-        c_x[pix], c_y[pix], <Bx>[G], <By>[G], <Bz>[G]
+        c_x[pix], c_y[pix], <Bx>[G], <By>[G], <Bz>[G], A[pixel_count]
         
         If there is no patches, this matrix is empty
         
@@ -146,11 +146,12 @@ def get_patches_and_vectors(I, bx, by, bz, pixel_limit=20, thr=0.5, floodfill=4)
     # print(labeled_array)
 
     # Create placeholder matrix that has
-    # cx[pix], cy[pix], <bx>[G], <by>[G], <bz>[G]
+    # cx[pix], cy[pix], <bx>[G], <by>[G], <bz>[G], A[pix_count]
     # 
     #because 0 is not feature we are interested in
     #print(num_features1)
-    RETURN_MATRIX = np.zeros([num_features1, 5])
+    RETURN_MATRIX = np.zeros([num_features1, 6])
+    regions1, counts1 = np.unique(labeled_array1, return_counts=True)
 
     for pore_index in features_label:
         # valid pixels for that pore index over which we should average
@@ -161,6 +162,8 @@ def get_patches_and_vectors(I, bx, by, bz, pixel_limit=20, thr=0.5, floodfill=4)
         #Note that here we are using -by because Bt = -By
         RETURN_MATRIX[pore_index - 1][3] = np.mean(-by.data[valid_pixels[:, 0], valid_pixels[:, 1]])
         RETURN_MATRIX[pore_index - 1][4] = np.mean(bz.data[valid_pixels[:, 0], valid_pixels[:, 1]])
+        #Pixel count
+        RETURN_MATRIX[pore_index - 1][5] = counts1[pore_index]
 
     return RETURN_MATRIX, labeled_array1
 

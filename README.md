@@ -216,3 +216,17 @@ Finished `region_fill_master_wrap.py` that handles patches discovery and labelin
 This function also return labeld masked array for discovered patches, in wraper we are just using it to write patches data into txt files. It's gonna be usefull also for tracking algorithm, but we will need full mask because of possible separation and merging of pores and objects on sun surfaces. But we can simply import function from that file with `from region_fill.... import function_name...` and handle outputs ourselves because its always returns two matrices (patches and labeled array, both are zero matrices if there is no patch for selected criteria)
 
 Read the code for more info, functions have documentation for input/output!
+
+## Tue 06 Aug 2019 09:27:18 AM CEST
+
+Small fixes and tweaks in `region_fill_master_wrap.py`. Added area of patch as output, fixed inverted x and y cmasses and random fixes.
+
+Currently working on region tracking. I decided to go with LCT way, creating 2D gaussian map and doing correlation in local neighbour (dx=dy=20pix => 40 pix search window). 
+
+This failed misserably, because i was tracking labeled features, not intensity maps, so if one is larger than another, correlation hits peak. Also, problem was not normalazing everything to one (all reagions were marked as 1 or 2 or 3 or 4 ...) so correlation functions prefered big numbers. This was resolved and tested again, but it still looks messy.
+
+## Tue 06 Aug 2019 03:31:44 PM CEST
+
+Currently trying to implement nearest neibhour search with additional conditions for merges and creation/dissapirance of regions. 
+
+My main consideration (trying to do in in parallel, because i cant concentrate on stuff above) is using DBSCAN clusttering on multiple timeframes of centers masses for each region. This should provide easy way of grouping traces of each spot. This is mostly inspired by https://www.reddit.com/r/algorithms/comments/bgt57a/identification_algorithm_with_coordinates_as_input/
