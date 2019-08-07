@@ -230,3 +230,9 @@ This failed misserably, because i was tracking labeled features, not intensity m
 Currently trying to implement nearest neibhour search with additional conditions for merges and creation/dissapirance of regions. 
 
 My main consideration (trying to do in in parallel, because i cant concentrate on stuff above) is using DBSCAN clusttering on multiple timeframes of centers masses for each region. This should provide easy way of grouping traces of each spot. This is mostly inspired by https://www.reddit.com/r/algorithms/comments/bgt57a/identification_algorithm_with_coordinates_as_input/
+
+## Tue 06 Aug 2019 05:52:06 PM CEST
+
+Creating decision tree for this algorithm. It includes check for merchers with DBSCAN (possibly) and linear sum assigment (hung alg) for determenating mapping. LSA alone will fail because of possible mergers and N of regions between images. This tree also includes search for outliers in next five frames (something that pops in/out on multiple consecutive frames, and we dont want to classify it as separate pore, we want to keep its values).
+
+This reminds me of some paper i've read few years ago for tracking and detecting sun spots with some errosion operators, ill look into my email because i wrote to the guy and he sent me the code he developed. (IDL, but it could be rewritten)
