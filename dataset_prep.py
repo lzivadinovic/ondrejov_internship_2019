@@ -12,7 +12,16 @@ from sunpy.coordinates import frames
 from enhance import enhance
 
 
-# In[ ]:
+input_dir = os.path.abspath(
+    "/home/lazar/Fak(s)/AF/prakse/SDSA/enhance/3481_11923_SHARP_CEA")
+search_criterium = "continuum"
+sufix = "_reduced"
+data_list = sorted(glob.glob(os.path.join(
+    input_dir, "*"+search_criterium+"*")))
+# outdir
+output_dir = os.path.abspath(
+    "/home/lazar/Fak(s)/AF/prakse/SDSA/enhance/3481_11923_SHARP_CEA_enhanced")
+
 
 
 # Create array for holding limb darkening coef
@@ -50,8 +59,6 @@ def correct_for_limb(sunpy_map):
     return sunpy.map.Map(limb_cor_data, sunpy_map.meta)
 
 
-# In[ ]:
-
 
 # AVERAGE
 def normalize(sunpy_map, header_keyword='AVG_F_NO', NBINS=100):
@@ -84,8 +91,6 @@ def normalize(sunpy_map, header_keyword='AVG_F_NO', NBINS=100):
     return sunpy.map.Map(I_new, sunpy_map.meta)
 
 
-# In[ ]:
-
 
 def enhance_wrapper(sunpy_map, depth=5, model="keepsize", activation="relu", ntype="intensity"):
     '''
@@ -101,20 +106,6 @@ def enhance_wrapper(sunpy_map, depth=5, model="keepsize", activation="relu", nty
                   activation=activation, ntype=ntype, output='1.fits', rtype='spmap')
     out.define_network()
     return out.predict()
-
-
-# In[ ]:
-
-
-input_dir = os.path.abspath(
-    "/home/lazar/Fak(s)/AF/prakse/SDSA/enhance/3481_11923_SHARP_CEA")
-search_criterium = "continuum"
-sufix = "_reduced"
-data_list = sorted(glob.glob(os.path.join(
-    input_dir, "*"+search_criterium+"*")))
-# outdir
-output_dir = os.path.abspath(
-    "/home/lazar/Fak(s)/AF/prakse/SDSA/enhance/3481_11923_SHARP_CEA_enhanced")
 
 
 def master_wrap(filename):

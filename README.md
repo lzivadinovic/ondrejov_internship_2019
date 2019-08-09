@@ -281,4 +281,155 @@ As you can see, my rant is mainly concentrated around issue that there is obviou
 This could also be one other general approach wich i think is more robust than distance criteria.
 
 
+# Fri 09 Aug 2019 02:14:33 PM CEST
 
+## Main instruction page (finished data products).
+
+### DATA FETCH
+First you need to fetch data from JSOC. This procedures are only tested and confirmed to work with HMI SHARP magnetograms. 
+
+You can select lookup query starting from here http://jsoc.stanford.edu/ajax/lookdata.html; You want data product that is called `hmi.sharp_cea_720s` only. Not nrt version!
+
+You can cunstruct query like `hmi.sharp_cea_720s[7376]` where 7376 is HARP number, in repo root is provided list that maps HARP regions to NOAA AR list.
+
+You want all keywords, and for segments you need at least following: `continuum`, `Bp`, `Bt`, `Br`, `bitmap` is optional;
+
+On export page you want method `url-tar` and protocol `FITS`
+
+
+### SETTING UP PYTHON ENVIRONMENT
+Requirements:
+
+    - python3.7 (+) (if its not provided by OS, i recommend using `sudo add-apt-repository ppa:deadsnakes/ppa` and then install python3.7 and python3.7-dev)
+    - python3.7-dev
+    - python-virtualenv
+    - imagemagic imagemagick-common ghostscrip libtk-img libtk8.6 libcfitsio
+
+To set up virtual environemnt so you can install python dependencies you should install packages above
+```bash
+sudo apt install python-virtualenv imagemagic imagemagick-common ghostscrip libtk-img libtk8.6 libcfitsio
+```
+to create virtual environment use:
+```bash
+virtualenv -p /path/to/python3.7 name_of_venv
+```
+It will create folder with name of the venv. To activate it use `source name_of_venv/bin/activate`.
+
+To install requirements, first you need to install keras, tensorflow and keras-contrib
+Start with (in your activated virtual environment)
+```bash
+pip install keras
+pip install tensorflow
+pip install git+https://www.github.com/keras-team/keras-contrib.git
+
+git clone https://www.github.com/keras-team/keras-contrib.git
+cd keras-contrib
+python convert_to_tf_keras.py
+USE_TF_KERAS=1 python setup.py install
+```
+
+After that you can install all dependancies with `pip install -r requirements.txt` and everything should be set up. Please note that this may take some time because i did not bother to clean environment. 
+
+From top of my head, you need only actually need: sunpy, astropy, numpy, scipy, keras, tensorflow, keras-contrib and matplotlib.
+
+After that, you are ready to go!
+
+### Processing data
+
+#### ALL OUTPUT DIRECTORIES MUST EXISTS BEFORE RUNNING SCRIPTS!!
+
+#### dataset_prep.py
+
+This is main function for preping data for further analysis. See notes from [31.7.](https://github.com/lzivadinovic/ondrejov_internship_2019#wed-31-jul-2019-112024-am-cest)
+
+To make it work you need to put this file into my fork of enhance. I've linked submodule for this, so you only need to run script called `RUN_ME.sh` and it will fetch module and transfer script in enhance folder in this repo.
+
+Then, go to enhance directory and make this script run by changeing some variables.
+
+To make it run, there are few changes you need to do in this file, variables of interest are:
+
+- `input_dir` - Input directory for your data set from JSOC; ie extracted .tar archive
+- `search_criterium` - This is what we use to find only continuum images from given data set
+- `sufix` - this will be appended on search criterium, so for example, final fits data file will be called `SOMETHING_SOMETHING_continuum_enhanced.fits`
+- `output_dir` - This is where `continuum_enhanced` data products will be stored as new .fits files
+
+There is explanation for every function inside file but dataset prep is following:
+
+- From data is removed limb darkening (see correct_for_limb function in file)
+- Then data is normalized to quiet sun (see normalize) function
+- Data is then enhanced; This effectevly doubles the resolution of image and deconvoles it for SDO/HMI PSD
+- Data is normalized again because enhance is doing something weird with total flux, but pre and post enhance histograms looks identical, so it only changes values
+- Data is saved to output_dir
+
+The process will perform for all data in `input_dir`.
+
+When you configured input/output dir, you can just run `python dataset_prep.py` and it will do processing.
+
+NOTE: Because i dont know how to set up CPU cores count for tensorflow, enhance will use all avaliable cores to process data. So while data is processing CPU will be toped at 100%
+
+#### upscale_magnetic_data_with_spline2d.py 
+
+More or less, it works same way as dataset_prep, and also here, you need to change some variables.
+
+- `data_dir_CEA` - Input directory for your data set from JSOC.
+- `data_output_dir` - Output directory for upscaled magnetic data
+- `search_criterium` - What to search for in data_dir_CEA (we want all magnetic maps)
+- `sufix` - same as above
+- `interp_method` - which interpolation method should resample use; default is spline, but if you want to change it see https://docs.sunpy.org/en/stable/api/sunpy.image.resample.resample.html?highlight=resample
+- `nproc` - This is number of how many images in parallel you want to process. On my machine, (4 cores) dataset of 1200 images (times 3 for each B coordinate) will take around 2 minutes while `nproc=4`, so adjust accordingly.
+
+Processing flow:
+- Load data
+- Find `NAXIS1` and `NAXIS2` header keywords and multiply them by 2
+- Interpolate image with bicubic interpolation (spline)
+- Update NAXIS1/2 keyword so it will match new data shape (note that everything else will be updated automatically, pixel center in new data shape, coordinates shift per pixel, etc...
+- Save output map
+
+When you configure variables, just run `python upscale_magnetic_data_with_spline2d.py`
+
+
+#### region_fill_master_wrap.py
+
+More or less same as above but with perk of importing main function for further workflow (this is also possible for dataset_prep, but functions there are not so usefull, this is ok for prototyping and messing around with data, more on that later).
+
+In as is mode, it functions as intermediate functions for detecting features on intensity images.
+Same as above, you need to change some variables to make it work on your dataset. It also requires to have tree structure of folders because it appends names of folder on tree root. If you run all previous codes as described (dataset output in different folder) then you will have no trouble running this script. Tree should look something like this:
+
+```
+#/data_dir/
+#├── 3481_11923_SHARP_CEA_bitmaps/SOME_NAME*_bitmap_*.fits
+#├── 3481_11923_SHARP_CEA_enhanced_norm/SOME_NAME*__enhanced_normalized__*.fits
+#└── 3481_11923_SHARP_CEA_upscaled_magnetic_data/SOME_NAME*__[Br, Bp, Bt]__*.fits
+```
+
+Variables of interes are:
+
+- `data_dir` - main data directory, tree root
+- `bitmaps` - folder for bitmaps, only change folder name, dont change `*bitmap*` this is product from JSOC
+- `magnetic_data_dir` - directory that have upscaled magnetic data products (result of script above)
+- `out_dir_for_patches` - directory for output txt files
+
+- `replace_this` and `with_this` - are just placeholders for naming new files. it wont actually overwrite .fits files, i just needed something for base name that include some data identifier (time in name of file for example). DO NOT CHANGE!
+
+Goal of this file to find patches of interest on intensity images based on some criteria. Check actuall function documentation for input parameters and output.
+
+TL;DR It takes upscaled intensity and B products, sets 0.5 of normalized intensity (IT DOES NOT CHECK IF IMAGE IS NORMALIZED) as threshold, and find connects all pixels that satisfy this criteria using 4 or 8 way floof fill algorithm. After that it removes all patches that are below some pixel count threshold. It returns two matrices, one holding patches information (position for each patch, and averaged bx,by,bz with area of patch) and mask for intensity image containing patches (TAKE CARE THAT PATCHES IN MASK ARE LABELED BUT NUMPY MASKED ARRAY SUPPORTS BINARY MAP AS ATRRIBUTE!!)
+
+Running this file as is will only save patches information in separate .txt files. If there is no patch on some image, it will create empty file. After you adjust variable just run as `python region_fill_master_wrap.py`. There is also nproc variable, 4cpu, 1200 images, 40sec on my cpu (i7-8550U) running at 3.6GHz.
+
+To import this function into some other python notebook, you need to specify path to this file with something like
+
+```
+import sys
+PATH_TO_FOLDER_HOLDING_THIS_FILE="/home/lazar/internship/"
+sys.path.append(PATH_TO_FOLDER_HOLDING_THIS_FILE) # Adds higher directory to python modules path.
+#This so i can fetch this function which is in directory above
+from region_fill_master_wrap import get_patches_and_vectors
+```
+
+Then you can use it as regular function. If you want some documentation type `help(get_patches_and_vectors)`.
+
+
+#### WIP matching based on txt files
+
+I still need to create clean version of this function, that will wrap and read everything as expected, but in meantime there is `helper_testing_notebooks/matching_and_tracking_clean.ipynb` that has proof of concept with some nice plots; It works, just need to be rewritten as script, function responsible for mapping will stay the same.

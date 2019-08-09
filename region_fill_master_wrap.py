@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[12]:
-
 
 import sunpy.map
 import numpy as np
@@ -38,6 +36,11 @@ Bp_list = sorted(glob.glob(os.path.join(
 Bt_list = sorted(glob.glob(os.path.join(
     magnetic_data_dir, "*Bt*")))
 
+out_dir_for_patches = os.path.join(data_dir,'patches_dir_test')
+#UGLY!!!!!
+replace_this = 'enhanced_normalized.fits'
+with_this = 'patches.txt'
+
 #Tree should look something like this
 #
 #/data_dir/
@@ -54,7 +57,7 @@ def get_patches_and_vectors(I, bx, by, bz, pixel_limit=20, thr=0.5, floodfill=4)
     '''
     I - intensity map for detecting pores; should be normalized to quiet sun
     bx - bx data (should be Bp from sharps) type should be sunpy map
-    by - by data (should be Bt from sharps) type should be sunpy map. DO NOT CHANGE SIGN OF DATA, THIS FUNCTION WILL DO IT!
+    by - by data (should be Bt from sharps) type should be sunpy map. DO NOT CHANGE SIGN OF DATA, THIS FUNCTION WILL DO IT! 
     bz - bz data (should be Br from sharps) type should be sunpy map
     pixel_limit - ignore patches that are smaller than this size
     thr - if I < thr => we assign it as pixel of interes; if data is normalized, 0.5 should work
@@ -167,7 +170,6 @@ def get_patches_and_vectors(I, bx, by, bz, pixel_limit=20, thr=0.5, floodfill=4)
 
     return RETURN_MATRIX, labeled_array1
 
-    #, labeled_array1
 
 def touch(path):
     '''
@@ -177,19 +179,13 @@ def touch(path):
         os.utime(path, None)
 
 
-# In[48]:
-
-
 
 #lets make it work first
 
 from multiprocessing import Pool
 nproc = 4  # i have 4 cores + hyperthreading (dont want to set my pc on fire)
 
-out_dir_for_patches = os.path.join(data_dir,'patches_dir_test')
-#UGLY!!!!!
-replace_this = 'enhanced_normalized.fits'
-with_this = 'patches.txt'
+
 def parallel_wrap(i):
     I = sunpy.map.Map(cont_list[i])
     #print(I.data.shape)

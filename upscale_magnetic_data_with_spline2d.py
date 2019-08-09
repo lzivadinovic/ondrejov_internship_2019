@@ -14,6 +14,7 @@ data_output_dir = os.path.abspath(
     "/home/lazar/Fak(s)/AF/prakse/SDSA/data/3481_11923_SHARP_CEA_upscaled_magnetic_data")
 search_criterium = ["Br", "Bp", "Bt"]
 sufix = "_upscaled"
+interp_method = "spline"
 
 
 from multiprocessing import Pool
@@ -27,7 +28,9 @@ nproc = 4  # i have 4 cores + hyperthreading
 def wraper_func(filename):
     my_map = sunpy.map.Map(filename)
     new_dimension = u.Quantity([my_map.meta["naxis1"]*2, my_map.meta["naxis2"]*2], u.pixel)
-    my_corrected_map = my_map.resample(new_dimension, method='spline')
+    my_corrected_map = my_map.resample(new_dimension, method=interp_method)
+    my_corrected_map.meta["naxis1"] *= 2
+    my_corrected_map.meta["naxis2"] *= 2
     new_name = os.path.basename(filename).replace(prefix, prefix+sufix)
     my_corrected_map.save(os.path.join(data_output_dir, new_name))
 
