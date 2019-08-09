@@ -236,3 +236,49 @@ My main consideration (trying to do in in parallel, because i cant concentrate o
 Creating decision tree for this algorithm. It includes check for merchers with DBSCAN (possibly) and linear sum assigment (hung alg) for determenating mapping. LSA alone will fail because of possible mergers and N of regions between images. This tree also includes search for outliers in next five frames (something that pops in/out on multiple consecutive frames, and we dont want to classify it as separate pore, we want to keep its values).
 
 This reminds me of some paper i've read few years ago for tracking and detecting sun spots with some errosion operators, ill look into my email because i wrote to the guy and he sent me the code he developed. (IDL, but it could be rewritten)
+
+## Fri 09 Aug 2019 10:30:06 AM CEST
+
+I haven't wrote in few days. I've realised that i dont have enough time to create propper decision tree for following structures so i wrote simple mapping bassed only on lsa. Its fast, not so robust, it has free parameters, it doesn't know how to handle when you have multiple patches really close to each other, but if you decrease search radii it will fail to detect mergers. So it's shit tier tracking algorithm, but hey, first time im doing this and i had ~3-4 days.
+
+Final data product is list of tuples whit mappings between two images, for example between image 600 and 601 on 3481 SHARP, result is: 
+
+##### PLEASE NOTE THAT ARROWS ARE POINTING FROM i+1 TO i IMAGE. I DIDN'T FIND A WAY HOW TO SOLVE THAT SO JUST IGNORE ARROW HEADS AND LOOK FROM LEFT TO RIGHT!
+
+![example](helper_testing_notebooks/1.jpg "")
+**Figure 1** — Example of mapping betwen two images.
+
+```
+[(0, 0), -> means that patch with label 1 (its 1 row in center matrix, 0 index when calling from python) from image 600 will map to patch that is row 0 in 601 center matrix
+(1, 1), 
+(2, 'X'), -> means that there is no mapping for patch that is in 3rd row (index 2) in center matrix. 
+(3, 2), 
+(4, 4), 
+(5, 3)]
+```
+
+
+other interesting case is (601-602):
+![example](helper_testing_notebooks/2.jpg)
+**Figure 2** — Example of mapping between two images.
+
+
+```
+[(0, 0),
+(1, 1),
+(2, 3), -\
+           - MERGER patches from row 2 and 3 will merge into one structure.
+(3, 3), -/ 
+(4, 4)]
+```
+
+
+
+I really wanted to represent this data as some sort of bipartite graph because if we store it in layers as such, we have greater options for searching and tracking and inspecting mergers. Saving in text files its just nasty.
+
+As you can see, my rant is mainly concentrated around issue that there is obviously patch on 600, 601, and 602 which is not detected by treshold algorithm on image 601 so in 602 is detected as new patch. One proposed idea on how to solve this is to use DBSCAN clustering on five consecutive images that have problems with this kind of stuff, so we can set low search radii and thrashold on at least 3 datapoints so we can use clusters as associations.
+
+This could also be one other general approach wich i think is more robust than distance criteria.
+
+
+
