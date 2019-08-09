@@ -1,0 +1,3 @@
+[submodule "enhance"]
+	path = enhance
+	url = https://github.com/lzivadinovic/enhance.git
