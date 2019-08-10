@@ -433,3 +433,9 @@ Then you can use it as regular function. If you want some documentation type `he
 #### WIP matching based on txt files
 
 I still need to create clean version of this function, that will wrap and read everything as expected, but in meantime there is `helper_testing_notebooks/matching_and_tracking_clean.ipynb` that has proof of concept with some nice plots; It works, just need to be rewritten as script, function responsible for mapping will stay the same.
+
+## Sat 10 Aug 2019 06:01:06 PM CEST
+
+Just noticed that simple version of matching_tracking_clean will fail if some input is vector, because distance matrix only works with vectors!@!#@!
+
+Started writting it down into simple terms, but it quickly became complicated. Will see on sunday or monday.
