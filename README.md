@@ -439,3 +439,13 @@ I still need to create clean version of this function, that will wrap and read e
 Just noticed that simple version of matching_tracking_clean will fail if some input is vector, because distance matrix only works with vectors!@!#@!
 
 Started writting it down into simple terms, but it quickly became complicated. Will see on sunday or monday.
+
+## Fri 16 Aug 2019 12:48:53 AM CEST
+
+Fixed patches maper function with padding array if ndim of patches file is = 1. ie if we have only one patch in patch, padder will fill it to have to patches which is working nicely with distance_matrix function, also we are able to easily detect this arbitrary added patch and not map it in code. Other workaround was to calculate manually if ndim = 1 of any input patches array.
+
+Added STARA edge detection prototype for patches. Everything is hardcoded and messy, but hey, at least i make it to work with SHARPS. Original hmi implementation (provided kindly by Fraser Watson) was dependant on coordinates grid, i will make it more robust once i have time. Also, i've changed parameters a bit and we can filter out smaller regions, on to of this i will use label to map actual regions. Note that on 1.5K X 0.7K pixel image detection takes <10 seconds, while simple filtering is less than 0.2 but it is not as robust. See image bellow for example:
+
+![STARA](helper_testing_notebooks/STARA_DETECT.jpg)
+**Figure 3** — STARA RoI detection.
+
