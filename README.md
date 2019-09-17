@@ -449,3 +449,15 @@ Added STARA edge detection prototype for patches. Everything is hardcoded and me
 ![STARA](helper_testing_notebooks/STARA_DETECT.jpg)
 **Figure 3** — STARA RoI detection.
 
+
+## Tue 17 Sep 2019 11:11:53 AM CEST
+
+Tweaked code a little bit; Used 8x8 pixel box for median filter and 20 pixels circle radius for tophat transformation. Maybe i need to tweak it a little bit more. Im thinking smaller median box (maybe use circle actually, box is kind of non intuitive for me for this application) and keep the same size (or even smaller) for tophat circle transformation. Thing is, median filter is kind of merger for structures, while circle for tophat is how close to the edge of circle we want to get. For example, larger circle for tophat, wider the area we are marking as region.
+
+![STARA](stara_raw_8_20.gif)
+
+**Figure 4** — STARA RoI detection.
+
+
+
+Anyhow, additional filtering for smaller structures is needed.
