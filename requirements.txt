@@ -13,7 +13,7 @@ autopep8==1.4.4
 backcall==0.1.0
 beautifulsoup4==4.7.1
 bintrees==2.0.7
-bleach==3.1.0
+bleach==3.1.2
 Bottleneck==1.2.1
 cached-property==1.5.1
 celluloid==0.2.0
